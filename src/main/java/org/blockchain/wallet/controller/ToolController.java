@@ -20,4 +20,9 @@ public class ToolController {
 
         return dncRestAPI.getHotCoin();
     }
+
+    @GetMapping(value = "/concept")
+    public String getConcepList() {
+        return dncRestAPI.getConcepList();
+    }
 }
