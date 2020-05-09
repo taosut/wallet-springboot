@@ -23,6 +23,11 @@ public class ToolController {
 
     @GetMapping(value = "/concept")
     public String getConcepList() {
-        return dncRestAPI.getConcepList();
+        return dncRestAPI.getConceptList();
+    }
+
+    @GetMapping(value = "/turnover")
+    public String getTurnOver() {
+        return dncRestAPI.getTurnOver();
     }
 }
