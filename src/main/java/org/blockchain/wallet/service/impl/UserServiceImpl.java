@@ -9,6 +9,7 @@ import org.blockchain.wallet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -53,6 +54,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        user.setRole(Constant.USER);
+        user.setCreateTime(new Date());
         userMapper.insert(user);
         user = findUserById(user.getId());
         return user;
@@ -79,6 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
+        user.setUpdateTime(new Date());
         userMapper.updateByPrimaryKeySelective(user);
         user = findUserById(user.getId());
         return user;
