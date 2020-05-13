@@ -1,5 +1,4 @@
 HELP.md
-**/src/main/resources/generatorConfig.properties
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
@@ -13,6 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
+/src/main/resources/generatorConfig.properties
 
 ### IntelliJ IDEA ###
 .idea
