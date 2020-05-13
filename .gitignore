@@ -1,5 +1,5 @@
 HELP.md
-generatorConfig.properties
+/src/main/resources/generatorConfig.properties
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
