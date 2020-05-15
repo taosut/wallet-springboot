@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,8 +21,11 @@ public class TxHistoryController {
     TxHistoryService txHistoryService;
 
     @GetMapping
-    public ResultResponse<List<TxHistory>> getAllTxHistory() {
+    public ResultResponse<List<TxHistory>> getAllTxHistory(@RequestParam String symbol) {
 
-        return new ResultResponse<>(txHistoryService.selectBySelective(new TxHistory()));
+        TxHistory txHistory = new TxHistory();
+        txHistory.setSymbol(symbol);
+
+        return new ResultResponse<>(txHistoryService.selectBySelective(txHistory));
     }
 }
