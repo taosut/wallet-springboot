@@ -114,11 +114,11 @@ public class MonitorAddressTask {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         BlockchairBTCAddrObj blockchairBTCAddrObj = blockChairRestAPI.getBTCAddress(address);
 
-        Long t1 = currentTime - blockchairBTCAddrObj.getBlockchairAddrAbstract().getAddress().getLast_seen_receiving().getTime();
-        Long t2 = currentTime-blockchairBTCAddrObj.getBlockchairAddrAbstract().getAddress().getLast_seen_spending().getTime();
-        Long t = timeOffset*60*1000L;
+        Long lastReceiveTime = currentTime - blockchairBTCAddrObj.getBlockchairAddrAbstract().getAddress().getLast_seen_receiving().getTime();
+        Long lastSendTime = currentTime-blockchairBTCAddrObj.getBlockchairAddrAbstract().getAddress().getLast_seen_spending().getTime();
+        Long timeLimit = timeOffset*60*1000L;
 
-        if(t1 > t && t2 > t) {
+        if(lastReceiveTime > timeLimit && lastSendTime > timeLimit) {
             return;
         }
 
@@ -157,7 +157,7 @@ public class MonitorAddressTask {
                     continue;
                 }
 
-                if(currentTime - txTime <= t) {
+                if(currentTime - txTime <= timeLimit) {
                     Long inValue = 0L;
                     StringBuilder inAddressListAndValue = new StringBuilder();
                     for(BlockchairInputOrOutput blockchairInput : blockchairTxAbstract.getInputs()) {
