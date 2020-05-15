@@ -41,6 +41,7 @@
     <if test="txHash != null">
       and tx_hash = #{txHash,jdbcType=VARCHAR}
     </if>
+    order by create_time desc
   </select>
   <select id="selectCount" parameterType="org.blockchain.wallet.entity.TxHistory" resultType="java.lang.Integer">
     select
