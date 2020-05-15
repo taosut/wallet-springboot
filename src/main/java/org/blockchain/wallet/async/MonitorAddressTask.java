@@ -165,7 +165,7 @@ public class MonitorAddressTask {
                             inValue += blockchairInput.getValue();
                         }
                         else if(blockchairInput.getValue() >= destValue*100000000) {
-                            inAddressListAndValue.append("地址：" + blockchairInput.getRecipient() + "\n数目：-" + new BigDecimal(blockchairInput.getValue()).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue() + "\n");
+                            inAddressListAndValue.append("地址：" + blockchairInput.getRecipient() + "\r\n数目：-" + new BigDecimal(blockchairInput.getValue()).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue() + "\r\n");
                         }
                     }
                     Double inValueDouble = new BigDecimal(inValue).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue();
@@ -177,7 +177,7 @@ public class MonitorAddressTask {
                             outValue += blockchairOutput.getValue();
                         }
                         else if(blockchairOutput.getValue() >= destValue*100000000) {
-                            outAddressListAndValue.append("地址：" + blockchairOutput.getRecipient() + "\n数目：+" + new BigDecimal(blockchairOutput.getValue()).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue() + "\n");
+                            outAddressListAndValue.append("地址：" + blockchairOutput.getRecipient() + "\r\n数目：+" + new BigDecimal(blockchairOutput.getValue()).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue() + "\r\n");
                         }
                     }
                     Double outValueDouble = new BigDecimal(outValue).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue();
