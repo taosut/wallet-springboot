@@ -3,6 +3,8 @@
  */
 package org.blockchain.wallet.entity.blockchair;
 
+import java.util.Date;
+
 /**
  * Auto-generated: 2019-05-29 9:41:5
  *
@@ -21,10 +23,10 @@ public class BlockchairAddr {
     private double spent_usd;
     private long output_count;
     private long unspent_output_count;
-    private String first_seen_receiving;
-    private String last_seen_receiving;
-    private String first_seen_spending;
-    private String last_seen_spending;
+    private Date first_seen_receiving;
+    private Date last_seen_receiving;
+    private Date first_seen_spending;
+    private Date last_seen_spending;
     private long transaction_count;
 
     public void setType(String type) {
@@ -98,35 +100,35 @@ public class BlockchairAddr {
         this.unspent_output_count = unspent_output_count;
     }
 
-    public String getFirst_seen_receiving() {
+    public Date getFirst_seen_receiving() {
         return first_seen_receiving;
     }
 
-    public void setFirst_seen_receiving(String first_seen_receiving) {
+    public void setFirst_seen_receiving(Date first_seen_receiving) {
         this.first_seen_receiving = first_seen_receiving;
     }
 
-    public String getLast_seen_receiving() {
+    public Date getLast_seen_receiving() {
         return last_seen_receiving;
     }
 
-    public void setLast_seen_receiving(String last_seen_receiving) {
+    public void setLast_seen_receiving(Date last_seen_receiving) {
         this.last_seen_receiving = last_seen_receiving;
     }
 
-    public String getFirst_seen_spending() {
+    public Date getFirst_seen_spending() {
         return first_seen_spending;
     }
 
-    public void setFirst_seen_spending(String first_seen_spending) {
+    public void setFirst_seen_spending(Date first_seen_spending) {
         this.first_seen_spending = first_seen_spending;
     }
 
-    public String getLast_seen_spending() {
+    public Date getLast_seen_spending() {
         return last_seen_spending;
     }
 
-    public void setLast_seen_spending(String last_seen_spending) {
+    public void setLast_seen_spending(Date last_seen_spending) {
         this.last_seen_spending = last_seen_spending;
     }
 

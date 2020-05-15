@@ -1,7 +1,6 @@
 package org.blockchain.wallet.controller;
 
 import org.blockchain.wallet.async.AsyncExcutor;
-import org.blockchain.wallet.entity.blockchain.BlockChainSingleAdr;
 import org.blockchain.wallet.entity.MonitorAddress;
 import org.blockchain.wallet.entity.blockchair.BlockchairBTCAddrObj;
 import org.blockchain.wallet.resttemplate.BlockChainRestAPI;
@@ -57,6 +56,6 @@ public class MonitorAddressController {
 
     @GetMapping(value = "/test")
     public void Test() {
-        asyncExcutor.monitorBTCByBlockChain();
+        asyncExcutor.monitorBTC();
     }
 }

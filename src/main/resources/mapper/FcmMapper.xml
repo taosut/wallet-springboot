@@ -30,6 +30,11 @@
       and fcm_token = #{fcmToken,jdbcType=VARCHAR}
     </if>
   </select>
+  <select id="selectAllTokens" parameterType="org.blockchain.wallet.entity.Fcm" resultType="java.lang.String">
+    select
+     fcm_token
+    from fcm
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from fcm
     where id = #{id,jdbcType=INTEGER}

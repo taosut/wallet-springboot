@@ -16,5 +16,9 @@ public interface FcmService {
 
     int register(Fcm fcm);
 
-    void sendNotification(int userId, String title, String body);
+    void sendPersonalNotification(int userId, String title, String body);
+
+    List<String> selectAllTokens();
+
+    void sendAllNotification(String title, String body);
 }

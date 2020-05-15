@@ -20,4 +20,6 @@ public interface FcmMapper {
     int updateByPrimaryKey(Fcm record);
 
     List<Fcm> selectBySelective(Fcm fcm);
+
+    List<String> selectAllTokens();
 }

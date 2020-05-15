@@ -1,5 +1,6 @@
 package org.blockchain.wallet.async;
 
+import org.blockchain.wallet.entity.TxHistory;
 import org.blockchain.wallet.entity.blockchain.BlockChainSingleAdr;
 import org.blockchain.wallet.entity.blockchain.BlockChainTxs;
 import org.blockchain.wallet.entity.blockchain.BlockChainTxsInput;
@@ -10,6 +11,8 @@ import org.blockchain.wallet.entity.blockchair.BlockchairInputOrOutput;
 import org.blockchain.wallet.entity.blockchair.BlockchairTxAbstract;
 import org.blockchain.wallet.resttemplate.BlockChainRestAPI;
 import org.blockchain.wallet.resttemplate.BlockChairRestAPI;
+import org.blockchain.wallet.service.FcmService;
+import org.blockchain.wallet.service.TxHistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,12 @@ public class MonitorAddressTask {
     @Autowired
     BlockChairRestAPI blockChairRestAPI;
 
+    @Autowired
+    TxHistoryService txHistoryService;
+
+    @Autowired
+    FcmService fcmService;
+
     @Value("${blockchain.monitor.query.limit}")
     Long limit;
 
@@ -46,6 +55,12 @@ public class MonitorAddressTask {
 
     @Value("${blochchair.monitor.address.dest.value}")
     Double destValue;
+
+    @Value("${blockchair.monitor.time.offset}")
+    int timeOffset;
+
+    @Value("${blockchair.monitor.txHistory.maxsize}")
+    int txMaxSize;
 
     public Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -98,31 +113,53 @@ public class MonitorAddressTask {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         BlockchairBTCAddrObj blockchairBTCAddrObj = blockChairRestAPI.getBTCAddress(address);
-        List<String> transactionsAll = blockchairBTCAddrObj.getBlockchairAddrAbstract().getTransactions();
 
-        for(int i=0;i<transactionsAll.size();i+=10) {
-            List<String> transactionsPart;
-            if(transactionsAll.size() - i >= 10) {
-                transactionsPart = transactionsAll.subList(i,i+10);
-            } else {
-                transactionsPart = transactionsAll.subList(i,transactionsAll.size());
+        Long t1 = currentTime - blockchairBTCAddrObj.getBlockchairAddrAbstract().getAddress().getLast_seen_receiving().getTime();
+        Long t2 = currentTime-blockchairBTCAddrObj.getBlockchairAddrAbstract().getAddress().getLast_seen_spending().getTime();
+        Long t = timeOffset*60*1000L;
+
+        if(t1 > t && t2 > t) {
+            return;
+        }
+
+        List<String> transactionsAll = blockchairBTCAddrObj.getBlockchairAddrAbstract().getTransactions();
+        List<String> transactionsPart;
+
+//        for(int i=0;i<transactionsAll.size();i+=10)
+        {
+
+//            if(transactionsAll.size() - i >= 10) {
+//                transactionsPart = transactionsAll.subList(i,i+10);
+//            } else {
+//                transactionsPart = transactionsAll.subList(i,transactionsAll.size());
+//            }
+            transactionsPart = transactionsAll.subList(0,10);
+
+            TxHistory txHistoryFind = new TxHistory();
+            txHistoryFind.setSymbol("BTC");
+            List<TxHistory> txHistoryList = txHistoryService.selectBySelective(txHistoryFind);
+            for(TxHistory txHistory : txHistoryList) {
+                while(transactionsPart.contains(txHistory.getTxHash())) {
+                    transactionsPart.remove(txHistory.getTxHash());
+                }
             }
 
             BlockchairBTCTxObj blockchairBTCTxObj = blockChairRestAPI.getBTCTx(transactionsPart);
 
             for(BlockchairTxAbstract blockchairTxAbstract : blockchairBTCTxObj.getBlockchairTxAbstractList()) {
+
                 Long txTime = 0L;
                 try {
-                    txTime = simpleDateFormat.parse(blockchairTxAbstract.getTransaction().getTime()).getTime();
+                    txTime = blockchairTxAbstract.getTransaction().getTime().getTime();
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.error(e.getMessage());
                     continue;
                 }
 
-                if(currentTime - txTime <= 2*60*1000) {
+                if(currentTime - txTime <= t) {
                     Long inValue = 0L;
-                    StringBuilder inAddressListAndValue = new StringBuilder("\n主要接收地址：\n");
+                    StringBuilder inAddressListAndValue = new StringBuilder();
                     for(BlockchairInputOrOutput blockchairInput : blockchairTxAbstract.getInputs()) {
                         if(blockchairInput.getRecipient().equals(address)) {
                             inValue += blockchairInput.getValue();
@@ -134,7 +171,7 @@ public class MonitorAddressTask {
                     Double inValueDouble = new BigDecimal(inValue).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue();
 
                     Long outValue = 0L;
-                    StringBuilder outAddressListAndValue = new StringBuilder("\n主要发送地址：\n");
+                    StringBuilder outAddressListAndValue = new StringBuilder();
                     for(BlockchairInputOrOutput blockchairOutput : blockchairTxAbstract.getOutputs()) {
                         if(blockchairOutput.getRecipient().equals(address)) {
                             outValue += blockchairOutput.getValue();
@@ -145,19 +182,45 @@ public class MonitorAddressTask {
                     }
                     Double outValueDouble = new BigDecimal(outValue).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).doubleValue();
 
+                    inValue = new BigDecimal(inValue).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).longValue();
+                    outValue = new BigDecimal(outValue).divide(new BigDecimal(100000000), 8, RoundingMode.HALF_DOWN).longValue();
 
                     //编写邮件内容
-                    if(inValueDouble > warnValueInBlockChair) {
-
+                    if(inValueDouble >= warnValueInBlockChair) {
+                        fcmService.sendAllNotification("大额转账预警", "地址：" + address + "\n转出："+ inValue + " BTC");
+                        insertTxHistory(blockchairTxAbstract.getTransaction().getHash(), "out", address, outAddressListAndValue.toString(), inValue.toString(), "BTC", blockchairTxAbstract.getTransaction().getTime());
                     }
-                    if(outValueDouble > warnValueInBlockChair) {
-
+                    if(outValueDouble >= warnValueInBlockChair) {
+                        fcmService.sendAllNotification("大额转账预警", "地址：" + address + "转入："+ outValue + " BTC");
+                        insertTxHistory(blockchairTxAbstract.getTransaction().getHash(), "in", address, inAddressListAndValue.toString(), outValue.toString(), "BTC", blockchairTxAbstract.getTransaction().getTime());
                     }
 
                 } else {
                     return;
                 }
             }
+        }
+    }
+
+    private void insertTxHistory(String hash, String inOrOut, String address, String dest, String amount, String symbol, Date create_time) {
+
+        TxHistory txHistory = new TxHistory();
+        txHistory.setTxHash(hash);
+        txHistory.setSymbol(symbol);
+        if(txHistoryService.selectBySelective(txHistory).size() != 0) {
+            return;
+        }
+
+        txHistory.setInOrOut(inOrOut);
+        txHistory.setAddress(address);
+        txHistory.setDest(dest);
+        txHistory.setAmount(amount);
+        txHistory.setCreateTime(create_time);
+
+        txHistoryService.insertTxHistory(txHistory);
+
+        while (txHistoryService.selectCount() > txMaxSize) {
+            txHistoryService.deleteByCreateTime();
         }
     }
 }

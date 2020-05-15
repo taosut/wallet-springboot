@@ -3,6 +3,8 @@
  */
 package org.blockchain.wallet.entity.blockchair;
 
+import java.util.Date;
+
 /**
  * Auto-generated: 2019-05-29 10:1:48
  *
@@ -15,7 +17,7 @@ public class BlockchairTx {
     private long id;
     private String hash;
     private String date;
-    private String time;
+    private Date time;
     private int size;
     private int weight;
     private int version;
@@ -65,11 +67,11 @@ public class BlockchairTx {
         this.date = date;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

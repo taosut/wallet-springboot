@@ -4,11 +4,14 @@ import org.blockchain.wallet.entity.Fcm;
 import org.blockchain.wallet.fcm.FcmClient;
 import org.blockchain.wallet.mapper.FcmMapper;
 import org.blockchain.wallet.service.FcmService;
+import org.blockchain.wallet.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,11 +65,11 @@ public class FcmServiceImpl implements FcmService {
     }
 
     @Override
-    public void sendNotification(int userId, String title, String body) {
+    public void sendPersonalNotification(int userId, String title, String body) {
         Fcm fcm = new Fcm();
         fcm.setUserId(userId);
         Map<String, String> message = new HashMap<>();
-        message.put("id", "1");
+        message.put("id", userId + String.valueOf(new Date().getTime()));
         message.put("title", title);
         message.put("body", body);
         try {
@@ -75,4 +78,28 @@ public class FcmServiceImpl implements FcmService {
             logger.error("send message", e);
         }
     }
+
+    @Override
+    public List<String> selectAllTokens() {
+        return fcmMapper.selectAllTokens();
+    }
+
+    @Override
+    @Async
+    public void sendAllNotification(String title, String body) {
+
+        List<String> registerTokens = selectAllTokens();
+        Map<String, String> message = new HashMap<>();
+        message.put("id", String.valueOf(new Date().getTime()));
+        message.put("title", title);
+        message.put("body", body);
+
+        try {
+            fcmClient.sendAllMessage(registerTokens, message);
+        } catch (Exception e) {
+            logger.error("send message", e);
+        }
+    }
+
+
 }

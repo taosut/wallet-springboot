@@ -26,7 +26,7 @@ public class AsyncExcutor {
     MonitorAddressService monitorAddressService;
 
 //    @Scheduled(cron = "0 */5 * * * ?")
-    public void monitorBTCByBlockChain() {
+    public void monitorBTC() {
         MonitorAddress findMonitorAddressCoindition = new MonitorAddress();
         findMonitorAddressCoindition.setSymbol("BTC");
         List<MonitorAddress> monitorAddressList = monitorAddressService.selectBySelective(findMonitorAddressCoindition);

@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -79,6 +80,12 @@ public class FcmClient {
                 .build();
 
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
+        logger.info("Sent message: " + response);
+    }
+
+    public void sendAllMessage(List<String> registerTokens, Map<String, String> data) throws InterruptedException, ExecutionException, FirebaseMessagingException {
+        MulticastMessage message = MulticastMessage.builder().putAllData(data).addAllTokens(registerTokens).build();
+        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
         logger.info("Sent message: " + response);
     }
 
