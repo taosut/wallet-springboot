@@ -25,7 +25,7 @@ public class AsyncExcutor {
     @Autowired
     MonitorAddressService monitorAddressService;
 
-//    @Scheduled(cron = "0 */5 * * * ?")
+    @Scheduled(cron = "0 */5 * * * ?")
     public void monitorBTC() {
         MonitorAddress findMonitorAddressCoindition = new MonitorAddress();
         findMonitorAddressCoindition.setSymbol("BTC");
