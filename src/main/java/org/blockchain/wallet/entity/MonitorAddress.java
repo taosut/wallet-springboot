@@ -10,6 +10,8 @@ public class MonitorAddress implements Serializable {
 
     private String symbol;
 
+    private String tag;
+
     private Date createTime;
 
     private Date updateTime;
@@ -38,6 +40,14 @@ public class MonitorAddress implements Serializable {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol == null ? null : symbol.trim();
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag == null ? null : tag.trim();
     }
 
     public Date getCreateTime() {

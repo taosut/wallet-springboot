@@ -5,11 +5,12 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, address, symbol, create_time, update_time
+    id, address, symbol, tag, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -17,6 +18,10 @@
     from monitor_address
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from monitor_address
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
   <select id="selectBySelective" parameterType="org.blockchain.wallet.entity.MonitorAddress" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -35,18 +40,14 @@
       and update_time = #{updateTime,jdbcType=TIMESTAMP}
     </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from monitor_address
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
   <insert id="insert" parameterType="org.blockchain.wallet.entity.MonitorAddress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into monitor_address (address, symbol, create_time, 
-      update_time)
-    values (#{address,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into monitor_address (address, symbol, tag, 
+      create_time, update_time)
+    values (#{address,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.blockchain.wallet.entity.MonitorAddress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -59,6 +60,9 @@
       </if>
       <if test="symbol != null">
         symbol,
+      </if>
+      <if test="tag != null">
+        tag,
       </if>
       <if test="createTime != null">
         create_time,
@@ -73,6 +77,9 @@
       </if>
       <if test="symbol != null">
         #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        #{tag,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -91,6 +98,9 @@
       <if test="symbol != null">
         symbol = #{symbol,jdbcType=VARCHAR},
       </if>
+      <if test="tag != null">
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -104,6 +114,7 @@
     update monitor_address
     set address = #{address,jdbcType=VARCHAR},
       symbol = #{symbol,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

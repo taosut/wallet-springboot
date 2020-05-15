@@ -10,6 +10,8 @@ public class TxHistory implements Serializable {
 
     private String address;
 
+    private String addressTag;
+
     private String symbol;
 
     private String amount;
@@ -23,6 +25,18 @@ public class TxHistory implements Serializable {
     private String dest;
 
     private static final long serialVersionUID = 1L;
+
+    public String getAddressTag() {
+        return addressTag;
+    }
+
+    public void setAddressTag(String addressTag) {
+        this.addressTag = addressTag;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;

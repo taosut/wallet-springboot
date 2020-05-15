@@ -13,35 +13,46 @@
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.blockchain.wallet.entity.TxHistory">
     <result column="dest" jdbcType="LONGVARCHAR" property="dest" />
+    <result column="address_tag" jdbcType="VARCHAR" property="addressTag" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, tx_hash, address, symbol, amount, in_or_out, create_time, update_time
+    tx_history.id, tx_history.tx_hash, tx_history.address, tx_history.symbol, tx_history.amount, tx_history.in_or_out,
+    tx_history.create_time, tx_history.update_time
   </sql>
   <sql id="Blob_Column_List">
-    dest
+    tx_history.dest
+  </sql>
+  <sql id="Address_Column_List">
+    address.tag as address_tag
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
+    ,
+    <include refid="Address_Column_List" />
     from tx_history
-    where id = #{id,jdbcType=INTEGER}
+    left join (select tag, address from monitor_address) as address on address.address = tx_history.address
+    where tx_history.id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectBySelective" parameterType="org.blockchain.wallet.entity.TxHistory" resultMap="BaseResultMap">
+  <select id="selectBySelective" parameterType="org.blockchain.wallet.entity.TxHistory" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
+    ,
+    <include refid="Address_Column_List" />
     from tx_history
+    left join (select tag, address from monitor_address) as address on address.address = tx_history.address
     where 1 = 1
     <if test="symbol != null">
-      and symbol = #{symbol,jdbcType=VARCHAR}
+      and tx_history.symbol = #{symbol,jdbcType=VARCHAR}
     </if>
     <if test="txHash != null">
-      and tx_hash = #{txHash,jdbcType=VARCHAR}
+      and tx_history.tx_hash = #{txHash,jdbcType=VARCHAR}
     </if>
-    order by create_time desc
+    order by tx_history.create_time desc
   </select>
   <select id="selectCount" parameterType="org.blockchain.wallet.entity.TxHistory" resultType="java.lang.Integer">
     select
