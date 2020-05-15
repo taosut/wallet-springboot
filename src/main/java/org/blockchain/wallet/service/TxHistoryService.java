@@ -15,4 +15,8 @@ public interface TxHistoryService {
     List<TxHistory> selectBySelective(TxHistory txHistory);
 
     int insertTxHistory(TxHistory txHistory);
+
+    TxHistory selectOldest(TxHistory txHistory);
+
+    int deleteByPrimaryKey(int id);
 }

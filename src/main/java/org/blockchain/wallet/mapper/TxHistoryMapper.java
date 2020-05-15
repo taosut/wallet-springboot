@@ -28,4 +28,6 @@ public interface TxHistoryMapper {
     int deleteByCreateTime();
 
     List<TxHistory> selectBySelective(TxHistory record);
+
+    TxHistory selectOldest(TxHistory record);
 }

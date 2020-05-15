@@ -12,24 +12,18 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.blockchain.wallet.entity.TxHistory">
-    <result column="dest" jdbcType="LONGVARCHAR" property="dest" />
     <result column="address_tag" jdbcType="VARCHAR" property="addressTag" />
   </resultMap>
   <sql id="Base_Column_List">
     tx_history.id, tx_history.tx_hash, tx_history.address, tx_history.symbol, tx_history.amount, tx_history.in_or_out,
     tx_history.create_time, tx_history.update_time
   </sql>
-  <sql id="Blob_Column_List">
-    tx_history.dest
-  </sql>
   <sql id="Address_Column_List">
     address.tag as address_tag
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
+    select
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     ,
     <include refid="Address_Column_List" />
     from tx_history
@@ -39,8 +33,6 @@
   <select id="selectBySelective" parameterType="org.blockchain.wallet.entity.TxHistory" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     ,
     <include refid="Address_Column_List" />
     from tx_history
@@ -53,6 +45,22 @@
       and tx_history.tx_hash = #{txHash,jdbcType=VARCHAR}
     </if>
     order by tx_history.create_time desc
+  </select>
+  <select id="selectOldest" parameterType="org.blockchain.wallet.entity.TxHistory" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Address_Column_List" />
+    from tx_history
+    left join (select tag, address from monitor_address) as address on address.address = tx_history.address
+    where 1 = 1
+    <if test="symbol != null">
+      and tx_history.symbol = #{symbol,jdbcType=VARCHAR}
+    </if>
+    <if test="txHash != null">
+      and tx_history.tx_hash = #{txHash,jdbcType=VARCHAR}
+    </if>
+    order by tx_history.create_time asc limit 1
   </select>
   <select id="selectCount" parameterType="org.blockchain.wallet.entity.TxHistory" resultType="java.lang.Integer">
     select
@@ -88,10 +96,10 @@
     </selectKey>
     insert into tx_history (tx_hash, address, symbol, 
       amount, in_or_out, create_time, 
-      update_time, dest)
+      update_time)
     values (#{txHash,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, 
       #{amount,jdbcType=VARCHAR}, #{inOrOut,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{dest,jdbcType=LONGVARCHAR})
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.blockchain.wallet.entity.TxHistory">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -120,9 +128,6 @@
       <if test="updateTime != null">
         update_time,
       </if>
-      <if test="dest != null">
-        dest,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="txHash != null">
@@ -145,9 +150,6 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dest != null">
-        #{dest,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -175,22 +177,7 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="dest != null">
-        dest = #{dest,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.blockchain.wallet.entity.TxHistory">
-    update tx_history
-    set tx_hash = #{txHash,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      symbol = #{symbol,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=VARCHAR},
-      in_or_out = #{inOrOut,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      dest = #{dest,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.blockchain.wallet.entity.TxHistory">

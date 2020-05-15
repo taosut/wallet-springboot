@@ -40,4 +40,14 @@ public class TxHistoryServiceImpl implements TxHistoryService {
 
         return txHistoryMapper.insert(txHistory);
     }
+
+    @Override
+    public TxHistory selectOldest(TxHistory txHistory) {
+        return txHistoryMapper.selectOldest(txHistory);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(int id) {
+        return txHistoryMapper.deleteByPrimaryKey(id);
+    }
 }

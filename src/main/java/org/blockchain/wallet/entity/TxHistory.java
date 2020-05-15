@@ -2,6 +2,7 @@ package org.blockchain.wallet.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TxHistory implements Serializable {
     private Integer id;
@@ -9,8 +10,6 @@ public class TxHistory implements Serializable {
     private String txHash;
 
     private String address;
-
-    private String addressTag;
 
     private String symbol;
 
@@ -22,9 +21,19 @@ public class TxHistory implements Serializable {
 
     private Date updateTime;
 
-    private String dest;
+    private String addressTag;
+
+    private List<TxDest> destList;
 
     private static final long serialVersionUID = 1L;
+
+    public List<TxDest> getDestList() {
+        return destList;
+    }
+
+    public void setDestList(List<TxDest> destList) {
+        this.destList = destList;
+    }
 
     public String getAddressTag() {
         return addressTag;
@@ -100,13 +109,5 @@ public class TxHistory implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public String getDest() {
-        return dest;
-    }
-
-    public void setDest(String dest) {
-        this.dest = dest == null ? null : dest.trim();
     }
 }
