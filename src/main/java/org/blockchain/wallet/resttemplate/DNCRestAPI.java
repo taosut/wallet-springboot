@@ -37,13 +37,26 @@ public class DNCRestAPI {
     }
 
     public String getConceptList() {
-        String url = rootUrl + "/api/v2/ranking/concept?page={page}&per_page={per_page}&sort={sort}&webp={webp}";
+        String url = rootUrl + "/api/concept/web-conceptlist?page={page}&webp={webp}";
 
         Map<String,String> map=new HashMap<String,String>();
         map.put("page", "1");
-        map.put("per_page", "30");
-        map.put("sort", "change_w");
         map.put("webp", "1");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
+
+    public String getConceptDetail(String id) {
+
+        String url = rootUrl + "/api/concept/web-conceptdetail?webp={webp}&id={id}&page={page}&pagesize={pagesize}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("page", "1");
+        map.put("id", id);
+        map.put("webp","1");
+        map.put("pagesize","100");
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
 

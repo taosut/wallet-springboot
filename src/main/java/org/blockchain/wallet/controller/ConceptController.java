@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
@@ -18,5 +19,10 @@ public class ConceptController {
     @GetMapping
     public String getConcepList() {
         return dncRestAPI.getConceptList();
+    }
+
+    @GetMapping(value = "detail")
+    public String getConceptDetail(@RequestParam String id) {
+        return dncRestAPI.getConceptDetail(id);
     }
 }
