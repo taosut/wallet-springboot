@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
@@ -24,5 +25,10 @@ public class ListingLatestController {
 
 //        return coinMarketCapRestAPI.getListingLatest();
         return dncRestAPI.getListingLatest();
+    }
+
+    @GetMapping(value = "/search")
+    public Object searchCoin(@RequestParam String coin) {
+        return dncRestAPI.searchCoin(coin);
     }
 }

@@ -102,4 +102,22 @@ public class DNCRestAPI {
 
         return response.getBody();
     }
+
+    public String searchCoin(String code) {
+        String url = rootUrl + "/api/search/websearch?webp={webp}&page={page}&exchange_page={exchange_page}" +
+                "&pagesize={pagesize}&code={code}&wallet_page={wallet_page}&token={token}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("page", "1");
+        map.put("exchange_page", "1");
+        map.put("webp","1");
+        map.put("pagesize","100");
+        map.put("code", code);
+        map.put("wallet_page", "1");
+        map.put("token", "");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
 }
