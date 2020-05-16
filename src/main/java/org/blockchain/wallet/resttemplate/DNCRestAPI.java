@@ -88,4 +88,18 @@ public class DNCRestAPI {
 
         return response.getBody();
     }
+
+    public String getGithub() {
+        String url = rootUrl + "/api/coin/hotprojectgithub?page={page}&pagesize={pagesize}&sort={sort}&webp={webp}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("page", "1");
+        map.put("sort", "devote");
+        map.put("webp","1");
+        map.put("pagesize","30");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
 }
