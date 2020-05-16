@@ -74,4 +74,18 @@ public class DNCRestAPI {
 
         return response.getBody();
     }
+
+    public String getListingLatest() {
+        String url = rootUrl + "/api/coin/web-coinrank?webp={webp}&pagesize={pagesize}&page={page}&type={type}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("page", "1");
+        map.put("type", "-1");
+        map.put("webp","1");
+        map.put("pagesize","100");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
 }
