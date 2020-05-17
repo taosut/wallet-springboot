@@ -31,4 +31,9 @@ public class ListingLatestController {
     public Object searchCoin(@RequestParam String coin) {
         return dncRestAPI.searchCoin(coin);
     }
+
+    @GetMapping(value = "/coinInfo")
+    public Object getCoinInfo(@RequestParam String code) {
+        return dncRestAPI.coinDetail(code);
+    }
 }

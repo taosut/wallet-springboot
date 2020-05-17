@@ -1,11 +1,11 @@
 package org.blockchain.wallet.resttemplate;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -117,6 +117,27 @@ public class DNCRestAPI {
         map.put("token", "");
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
+
+    public String coinDetail(String code) {
+
+        String url = rootUrl + "/api/coin/web-coininfo";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("webp","1");
+        map.put("code", code);
+        map.put("token", "");
+
+        String requestBody = JSONObject.toJSONString(map);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> entity = new HttpEntity<>(requestBody,headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class, new HashMap<>());
 
         return response.getBody();
     }
