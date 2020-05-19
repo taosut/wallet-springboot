@@ -144,15 +144,9 @@ public class DNCRestAPI {
     }
 
     public CoinPrice getCoinPrice(String code) {
-        String url = rootUrl + "/api/v4/reducehalf/info?coincode={coincode}&webp={webp}";
 
-        Map<String,String> map=new HashMap<String,String>();
-        map.put("coincode",code);
-        map.put("webp","1");
+        String result = coinDetail(code);
 
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
-
-        String result = response.getBody();
         String dataStr = JSONObject.parseObject(result).get("data").toString();
         CoinPrice coinPrice = JSONObject.parseObject(dataStr, CoinPrice.class);
 
