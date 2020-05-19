@@ -56,6 +56,6 @@ public class MonitorAddressController {
 
     @GetMapping(value = "/test")
     public void Test() {
-        asyncExcutor.monitorBTC();
+        asyncExcutor.monitorBTCAddress();
     }
 }

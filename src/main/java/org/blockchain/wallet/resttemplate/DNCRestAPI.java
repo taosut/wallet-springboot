@@ -1,6 +1,7 @@
 package org.blockchain.wallet.resttemplate;
 
 import com.alibaba.fastjson.JSONObject;
+import org.blockchain.wallet.entity.CoinPrice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,5 +141,21 @@ public class DNCRestAPI {
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class, new HashMap<>());
 
         return response.getBody();
+    }
+
+    public CoinPrice getCoinPrice(String code) {
+        String url = rootUrl + "/api/v4/reducehalf/info?coincode={coincode}&webp={webp}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("coincode",code);
+        map.put("webp","1");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        String result = response.getBody();
+        String dataStr = JSONObject.parseObject(result).get("data").toString();
+        CoinPrice coinPrice = JSONObject.parseObject(dataStr, CoinPrice.class);
+
+        return coinPrice;
     }
 }

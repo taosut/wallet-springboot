@@ -38,6 +38,9 @@ public class Constant {
     public static final String SETTING_NOTIFICATION_ON = "true";
     public static final String SETTING_NOTIFICATION_OFF = "false";
 
+    public static final String NOTIFICATION_ON = "on";
+    public static final String NOTIFICATION_OFF = "off";
+
 
     public static final String PENDING = "pending";
     public static final String SUCCESS = "success";

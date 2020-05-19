@@ -67,7 +67,7 @@ public class MonitorAddressTask {
     @Value("${blockchair.monitor.txHistory.maxsize}")
     int txMaxSize;
 
-    public Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Async
     public void monitorBTCByBlockChain(String address, Long currentTime) {
