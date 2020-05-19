@@ -30,6 +30,7 @@ public class MonitorPriceServiceImpl implements MonitorPriceService {
 
     @Override
     public int updateBySelective(MonitorPrice monitorPrice) {
+        monitorPrice.setUpdateTime(new Date());
         return monitorPriceMapper.updateByPrimaryKeySelective(monitorPrice);
     }
 

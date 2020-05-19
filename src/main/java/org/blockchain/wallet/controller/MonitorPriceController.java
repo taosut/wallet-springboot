@@ -41,6 +41,11 @@ public class MonitorPriceController {
         return new ResultResponse<>(monitorPriceService.insert(monitorPrice));
     }
 
+    @PutMapping
+    public ResultResponse<Integer> update(@RequestBody MonitorPrice monitorPrice) {
+        return new ResultResponse<>(monitorPriceService.updateBySelective(monitorPrice));
+    }
+
     @GetMapping
     public ResultResponse<List<MonitorPrice>> selectBySelective(@RequestParam int userId, @RequestParam String notification) {
 

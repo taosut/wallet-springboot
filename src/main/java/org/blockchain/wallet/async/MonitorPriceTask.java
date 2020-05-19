@@ -42,28 +42,24 @@ public class MonitorPriceTask {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格已上涨至" + monitorPrice.getUpPrice());
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
-                    monitorPrice.setUpdateTime(new Date());
                     monitorPriceService.updateBySelective(monitorPrice);
                 }
                 if(monitorPrice.getDownPrice() != null && monitorPrice.getDownPrice() >= Double.valueOf(coinPrice.getPrice())) {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格已下跌至" + monitorPrice.getDownPrice());
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
-                    monitorPrice.setUpdateTime(new Date());
                     monitorPriceService.updateBySelective(monitorPrice);
                 }
                 if(monitorPrice.getUpChangePercent() != null && monitorPrice.getUpChangePercent() <= Double.valueOf(coinPrice.getChange_percent())) {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格24h上涨幅度已达到" + monitorPrice.getUpChangePercent());
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
-                    monitorPrice.setUpdateTime(new Date());
                     monitorPriceService.updateBySelective(monitorPrice);
                 }
                 if(monitorPrice.getDownChangePercent() != null && monitorPrice.getDownChangePercent() <= Double.valueOf(coinPrice.getPrice())) {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格24h下跌幅度已达到" + monitorPrice.getDownChangePercent());
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
-                    monitorPrice.setUpdateTime(new Date());
                     monitorPriceService.updateBySelective(monitorPrice);
                 }
             }
