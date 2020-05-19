@@ -56,7 +56,7 @@ public class AsyncExcutor {
         }
     }
 
-//    @Scheduled(cron = "50 */5 * * * ?")
+    @Scheduled(cron = "50 */5 * * * ?")
     public void monitorPrice() {
 
         List<MonitorCoin> monitorCoinList = monitorCoinService.selectBySelective(new MonitorCoin());
