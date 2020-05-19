@@ -49,6 +49,7 @@
     <if test="notification != null">
       and notification = #{notification,jdbcType=VARCHAR}
     </if>
+    order by create_time DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from monitor_price
