@@ -3,8 +3,10 @@ package org.blockchain.wallet.controller;
 import org.blockchain.wallet.async.AsyncExcutor;
 import org.blockchain.wallet.base.ResultResponse;
 import org.blockchain.wallet.entity.CoinPrice;
+import org.blockchain.wallet.entity.MonitorCoin;
 import org.blockchain.wallet.entity.MonitorPrice;
 import org.blockchain.wallet.resttemplate.DNCRestAPI;
+import org.blockchain.wallet.service.MonitorCoinService;
 import org.blockchain.wallet.service.MonitorPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -26,6 +28,9 @@ public class MonitorPriceController {
     @Autowired
     MonitorPriceService monitorPriceService;
 
+    @Autowired
+    MonitorCoinService monitorCoinService;
+
     @GetMapping(value ="/coinPrice")
     public ResultResponse<CoinPrice> getCoinPrice(@RequestParam String code) {
         return new ResultResponse<>(dncRestAPI.getCoinPrice(code));
@@ -44,6 +49,11 @@ public class MonitorPriceController {
         monitorPrice.setNotification(notification);
 
         return new ResultResponse<>(monitorPriceService.selectBySelective(monitorPrice));
+    }
+
+    @GetMapping(value = "/coin")
+    public ResultResponse<List<MonitorCoin>> selectCoins() {
+        return new ResultResponse<>(monitorCoinService.selectBySelective(new MonitorCoin()));
     }
 
     @GetMapping(value = "test")
