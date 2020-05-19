@@ -20,6 +20,12 @@ public class MonitorPrice implements Serializable {
 
     private String notification;
 
+    private String email;
+
+    private String sms;
+
+    private String voice;
+
     private Date createTime;
 
     private Date updateTime;
@@ -88,6 +94,30 @@ public class MonitorPrice implements Serializable {
 
     public void setNotification(String notification) {
         this.notification = notification == null ? null : notification.trim();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    public String getSms() {
+        return sms;
+    }
+
+    public void setSms(String sms) {
+        this.sms = sms == null ? null : sms.trim();
+    }
+
+    public String getVoice() {
+        return voice;
+    }
+
+    public void setVoice(String voice) {
+        this.voice = voice == null ? null : voice.trim();
     }
 
     public Date getCreateTime() {

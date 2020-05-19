@@ -10,12 +10,15 @@
     <result column="up_change_percent" jdbcType="DOUBLE" property="upChangePercent" />
     <result column="down_change_percent" jdbcType="DOUBLE" property="downChangePercent" />
     <result column="notification" jdbcType="VARCHAR" property="notification" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="sms" jdbcType="VARCHAR" property="sms" />
+    <result column="voice" jdbcType="VARCHAR" property="voice" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, code, user_id, up_price, down_price, up_change_percent, down_change_percent, 
-    notification, create_time, update_time
+    notification, email, sms, voice, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -49,6 +52,15 @@
     <if test="notification != null">
       and notification = #{notification,jdbcType=VARCHAR}
     </if>
+    <if test="voice != null">
+      and voice = #{voice,jdbcType=VARCHAR}
+    </if>
+    <if test="sms != null">
+      and sms = #{sms,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
     order by create_time DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -65,11 +77,13 @@
     </selectKey>
     insert into monitor_price (code, user_id, up_price, 
       down_price, up_change_percent, down_change_percent, 
-      notification, create_time, update_time
+      notification, email, sms, 
+      voice, create_time, update_time
       )
     values (#{code,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{upPrice,jdbcType=DOUBLE}, 
       #{downPrice,jdbcType=DOUBLE}, #{upChangePercent,jdbcType=DOUBLE}, #{downChangePercent,jdbcType=DOUBLE}, 
-      #{notification,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{notification,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{sms,jdbcType=VARCHAR}, 
+      #{voice,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.blockchain.wallet.entity.MonitorPrice">
@@ -99,6 +113,15 @@
       <if test="notification != null">
         notification,
       </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="sms != null">
+        sms,
+      </if>
+      <if test="voice != null">
+        voice,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -127,6 +150,15 @@
       </if>
       <if test="notification != null">
         #{notification,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sms != null">
+        #{sms,jdbcType=VARCHAR},
+      </if>
+      <if test="voice != null">
+        #{voice,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -160,6 +192,15 @@
       <if test="notification != null">
         notification = #{notification,jdbcType=VARCHAR},
       </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sms != null">
+        sms = #{sms,jdbcType=VARCHAR},
+      </if>
+      <if test="voice != null">
+        voice = #{voice,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -178,6 +219,9 @@
       up_change_percent = #{upChangePercent,jdbcType=DOUBLE},
       down_change_percent = #{downChangePercent,jdbcType=DOUBLE},
       notification = #{notification,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      sms = #{sms,jdbcType=VARCHAR},
+      voice = #{voice,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
