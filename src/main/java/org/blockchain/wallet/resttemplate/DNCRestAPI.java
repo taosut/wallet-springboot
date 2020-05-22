@@ -1,7 +1,7 @@
 package org.blockchain.wallet.resttemplate;
 
 import com.alibaba.fastjson.JSONObject;
-import org.blockchain.wallet.entity.CoinPrice;
+import org.blockchain.wallet.entity.DNCCoinPrice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class DNCRestAPI {
     @Value("${dnc.root.url}")
     String rootUrl;
 
-    public Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public String getHotCoin() {
         String url = rootUrl + "/api/coin/hotcoin_search?page={page}&pagesize={pagesize}&webp={webp}";
@@ -143,13 +143,13 @@ public class DNCRestAPI {
         return response.getBody();
     }
 
-    public CoinPrice getCoinPrice(String code) {
+    public DNCCoinPrice getCoinPrice(String code) {
 
         String result = coinDetail(code);
 
         String dataStr = JSONObject.parseObject(result).get("data").toString();
-        CoinPrice coinPrice = JSONObject.parseObject(dataStr, CoinPrice.class);
+        DNCCoinPrice dncCoinPrice = JSONObject.parseObject(dataStr, DNCCoinPrice.class);
 
-        return coinPrice;
+        return dncCoinPrice;
     }
 }

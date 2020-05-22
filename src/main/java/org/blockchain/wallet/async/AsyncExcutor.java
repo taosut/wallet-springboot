@@ -4,7 +4,6 @@ import org.blockchain.wallet.entity.MonitorAddress;
 import org.blockchain.wallet.entity.MonitorCoin;
 import org.blockchain.wallet.service.MonitorAddressService;
 import org.blockchain.wallet.service.MonitorCoinService;
-import org.blockchain.wallet.service.MonitorPriceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,14 +55,14 @@ public class AsyncExcutor {
         }
     }
 
-//    @Scheduled(cron = "50 */5 * * * ?")
+    @Scheduled(cron = "50 */5 * * * ?")
     public void monitorPrice() {
 
         List<MonitorCoin> monitorCoinList = monitorCoinService.selectBySelective(new MonitorCoin());
 
         for(MonitorCoin monitorCoin : monitorCoinList) {
             try {
-                monitorPriceTask.monitorPrice(monitorCoin.getCode());
+                monitorPriceTask.monitorPriceByHuobi(monitorCoin);
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }

@@ -2,10 +2,12 @@ package org.blockchain.wallet.controller;
 
 import org.blockchain.wallet.async.AsyncExcutor;
 import org.blockchain.wallet.base.ResultResponse;
-import org.blockchain.wallet.entity.CoinPrice;
+import org.blockchain.wallet.entity.DNCCoinPrice;
+import org.blockchain.wallet.entity.HuobiMarketDetail;
 import org.blockchain.wallet.entity.MonitorCoin;
 import org.blockchain.wallet.entity.MonitorPrice;
 import org.blockchain.wallet.resttemplate.DNCRestAPI;
+import org.blockchain.wallet.resttemplate.HuobiRestAPI;
 import org.blockchain.wallet.service.MonitorCoinService;
 import org.blockchain.wallet.service.MonitorPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class MonitorPriceController {
     DNCRestAPI dncRestAPI;
 
     @Autowired
+    HuobiRestAPI huobiRestAPI;
+
+    @Autowired
     AsyncExcutor asyncExcutor;
 
     @Autowired
@@ -32,8 +37,8 @@ public class MonitorPriceController {
     MonitorCoinService monitorCoinService;
 
     @GetMapping(value ="/coinPrice")
-    public ResultResponse<CoinPrice> getCoinPrice(@RequestParam String code) {
-        return new ResultResponse<>(dncRestAPI.getCoinPrice(code));
+    public ResultResponse<HuobiMarketDetail> getCoinPrice(@RequestParam String symbol) {
+        return new ResultResponse<>(huobiRestAPI.getPrice(symbol));
     }
 
     @PostMapping
@@ -61,8 +66,9 @@ public class MonitorPriceController {
         return new ResultResponse<>(monitorCoinService.selectBySelective(new MonitorCoin()));
     }
 
-    @GetMapping(value = "test")
+    @GetMapping(value = "/test")
     public void monitorPrice() {
         asyncExcutor.monitorPrice();
     }
+
 }

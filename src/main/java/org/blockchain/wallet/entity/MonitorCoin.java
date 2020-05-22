@@ -8,11 +8,25 @@ public class MonitorCoin implements Serializable {
 
     private String code;
 
+    private String symbol;
+
     private Date createTime;
 
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;

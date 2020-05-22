@@ -1,6 +1,6 @@
 package org.blockchain.wallet.entity;
 
-public class CoinPrice {
+public class DNCCoinPrice {
 
     private String code;
     private String name;
