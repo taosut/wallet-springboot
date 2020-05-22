@@ -1,6 +1,7 @@
 package org.blockchain.wallet.service.impl;
 
 import org.blockchain.wallet.service.EmailService;
+import org.blockchain.wallet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,9 +19,12 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     JavaMailSenderImpl javaMailSender;
 
+    @Autowired
+    UserService userService;
+
     @Override
     @Async
-    public void SendSimpleEmail(String toEmailAdr, String subject, String text) {
+    public void sendSimpleEmail(String toEmailAdr, String subject, String text) {
 
         try {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -37,5 +41,12 @@ public class EmailServiceImpl implements EmailService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void sendEmailByUid(int userId, String subject, String text) {
+
+        String email = userService.findUserById(userId).getEmail();
+        sendSimpleEmail(email, subject, text);
     }
 }
