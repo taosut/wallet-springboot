@@ -55,43 +55,43 @@ public class MonitorPriceTask {
                             monitorPrice.getCode() + "的价格已上涨至" + monitorPrice.getUpPrice());
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
                 }
-                if(monitorPrice.getDownPrice() != null && monitorPrice.getDownPrice() >= Double.valueOf(huobiMarketDetail.getClose())) {
+                else if(monitorPrice.getDownPrice() != null && monitorPrice.getDownPrice() >= Double.valueOf(huobiMarketDetail.getClose())) {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格已下跌至" + monitorPrice.getDownPrice());
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
                 }
-                if(monitorPrice.getUpChangePercent() != null && monitorPrice.getUpChangePercent() <= changePercent) {
+                else if(monitorPrice.getUpChangePercent() != null && monitorPrice.getUpChangePercent() <= changePercent) {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格24h上涨幅度已达到" + monitorPrice.getUpChangePercent() + "%");
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
                 }
-                if(monitorPrice.getDownChangePercent() != null && monitorPrice.getDownChangePercent() >= changePercent) {
+                else if(monitorPrice.getDownChangePercent() != null && monitorPrice.getDownChangePercent() >= changePercent) {
                     fcmService.sendPersonalNotification(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格24h下跌幅度已达到" + monitorPrice.getDownChangePercent() + "%");
                     monitorPrice.setNotification(Constant.NOTIFICATION_OFF);
                 }
                 monitorPriceService.updateBySelective(monitorPrice);
             }
-            if(monitorPrice.getEmail().equals(Constant.NOTIFICATION_ON)) {
+            if(monitorPrice.getEmail().equals(Constant.NOTIFICATION_EMAIL_TRUE)) {
                 if(monitorPrice.getUpPrice() != null && monitorPrice.getUpPrice() <= Double.valueOf(huobiMarketDetail.getClose())) {
                     emailService.sendEmailByUid(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格已上涨至" + monitorPrice.getUpPrice());
-                    monitorPrice.setEmail(Constant.NOTIFICATION_OFF);
+                    monitorPrice.setEmail(Constant.NOTIFICATION_EMAIL_FALSE);
                 }
-                if(monitorPrice.getDownPrice() != null && monitorPrice.getDownPrice() >= Double.valueOf(huobiMarketDetail.getClose())) {
+                else if(monitorPrice.getDownPrice() != null && monitorPrice.getDownPrice() >= Double.valueOf(huobiMarketDetail.getClose())) {
                     emailService.sendEmailByUid(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格已下跌至" + monitorPrice.getDownPrice());
-                    monitorPrice.setEmail(Constant.NOTIFICATION_OFF);
+                    monitorPrice.setEmail(Constant.NOTIFICATION_EMAIL_FALSE);
                 }
-                if(monitorPrice.getUpChangePercent() != null && monitorPrice.getUpChangePercent() <= changePercent) {
+                else if(monitorPrice.getUpChangePercent() != null && monitorPrice.getUpChangePercent() <= changePercent) {
                     emailService.sendEmailByUid(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格24h上涨幅度已达到" + monitorPrice.getUpChangePercent() + "%");
-                    monitorPrice.setEmail(Constant.NOTIFICATION_OFF);
+                    monitorPrice.setEmail(Constant.NOTIFICATION_EMAIL_FALSE);
                 }
-                if(monitorPrice.getDownChangePercent() != null && monitorPrice.getDownChangePercent() >= changePercent) {
+                else if(monitorPrice.getDownChangePercent() != null && monitorPrice.getDownChangePercent() >= changePercent) {
                     emailService.sendEmailByUid(monitorPrice.getUserId(), "价格预警",
                             monitorPrice.getCode() + "的价格24h下跌幅度已达到" + monitorPrice.getDownChangePercent() + "%");
-                    monitorPrice.setEmail(Constant.NOTIFICATION_OFF);
+                    monitorPrice.setEmail(Constant.NOTIFICATION_EMAIL_FALSE);
                 }
                 monitorPriceService.updateBySelective(monitorPrice);
             }

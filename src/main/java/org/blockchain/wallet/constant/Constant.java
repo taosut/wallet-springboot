@@ -40,6 +40,8 @@ public class Constant {
 
     public static final String NOTIFICATION_ON = "on";
     public static final String NOTIFICATION_OFF = "off";
+    public static final String NOTIFICATION_EMAIL_TRUE = "true";
+    public static final String NOTIFICATION_EMAIL_FALSE = "false";
 
 
     public static final String PENDING = "pending";
