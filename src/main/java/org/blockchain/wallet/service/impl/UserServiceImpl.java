@@ -1,10 +1,12 @@
 package org.blockchain.wallet.service.impl;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.blockchain.wallet.constant.Constant;
 import org.blockchain.wallet.constant.ErrorMessage;
 import org.blockchain.wallet.entity.User;
 import org.blockchain.wallet.mapper.UserMapper;
+import org.blockchain.wallet.service.EmailService;
 import org.blockchain.wallet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,5 +88,15 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByPrimaryKeySelective(user);
         user = findUserById(user.getId());
         return user;
+    }
+
+    @Override
+    public User forgetPassword(User user) {
+        Preconditions.checkArgument((findUserBySelective(user).size() != 0), ErrorMessage.ACCOUNT_NOT_FOUND);
+        user.setPassword(RandomStringUtils.randomAlphanumeric(8));
+        user.setUpdateTime(new Date());
+        userMapper.forgetPassword(user);
+        List<User> userList = findUserBySelective(user);
+        return userList.get(0);
     }
 }

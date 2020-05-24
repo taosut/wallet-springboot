@@ -22,4 +22,6 @@ public interface UserMapper {
     List<User> selectBySelective(User record);
 
     User findAccount(User record);
+
+    int forgetPassword(User record);
 }

@@ -33,6 +33,7 @@ public class EmailServiceImpl implements EmailService {
             //邮件接收人
             simpleMailMessage.setTo(toEmailAdr);
             //邮件主题
+            subject = "[HD-Wallet] " + subject;
             simpleMailMessage.setSubject(subject);
             //邮件内容
             simpleMailMessage.setText(text);

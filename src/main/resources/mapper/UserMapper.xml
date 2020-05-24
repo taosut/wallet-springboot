@@ -151,6 +151,18 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="forgetPassword" parameterType="org.blockchain.wallet.entity.User">
+    update user
+    <set>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where username = #{username,jdbcType=VARCHAR} and email = #{email,jdbcType=VARCHAR}
+  </update>
   <update id="updateByPrimaryKey" parameterType="org.blockchain.wallet.entity.User">
     update user
     set username = #{username,jdbcType=VARCHAR},

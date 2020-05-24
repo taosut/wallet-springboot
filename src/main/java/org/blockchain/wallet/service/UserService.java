@@ -19,4 +19,6 @@ public interface UserService {
     User login(User user);
 
     User updateUser(User user);
+
+    User forgetPassword(User user);
 }
