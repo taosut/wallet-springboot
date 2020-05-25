@@ -13,7 +13,7 @@ import java.util.List;
 public class BlockchairAddrAbstract {
 
     private BlockchairAddr address;
-    private List<String> transactions;
+    private List<BlockchairAddrTx> transactions;
 
     public void setAddress(BlockchairAddr address) {
         this.address = address;
@@ -22,11 +22,11 @@ public class BlockchairAddrAbstract {
         return address;
     }
 
-    public void setTransactions(List<String> transactions) {
-        this.transactions = transactions;
-    }
-    public List<String> getTransactions() {
+    public List<BlockchairAddrTx> getTransactions() {
         return transactions;
     }
 
+    public void setTransactions(List<BlockchairAddrTx> transactions) {
+        this.transactions = transactions;
+    }
 }

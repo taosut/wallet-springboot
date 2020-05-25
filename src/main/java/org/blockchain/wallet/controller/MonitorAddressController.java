@@ -2,6 +2,7 @@ package org.blockchain.wallet.controller;
 
 import org.blockchain.wallet.async.AsyncExcutor;
 import org.blockchain.wallet.entity.MonitorAddress;
+import org.blockchain.wallet.entity.blockchair.BlockchairAddrAbstract;
 import org.blockchain.wallet.entity.blockchair.BlockchairBTCAddrObj;
 import org.blockchain.wallet.resttemplate.BlockChainRestAPI;
 import org.blockchain.wallet.resttemplate.BlockChairRestAPI;
@@ -34,18 +35,18 @@ public class MonitorAddressController {
     AsyncExcutor asyncExcutor;
 
     @GetMapping
-    public List<BlockchairBTCAddrObj> findSingleAddress(@RequestParam String symbol) {
+    public List<BlockchairAddrAbstract> findSingleAddress(@RequestParam String symbol) {
 
         MonitorAddress findMonitorAddress = new MonitorAddress();
         findMonitorAddress.setSymbol(symbol);
         List<MonitorAddress> monitorAddressList =  monitorAddressService.selectBySelective(findMonitorAddress);
-        List<BlockchairBTCAddrObj> blockchairBTCAddrObjList = new ArrayList<>();
+        List<BlockchairAddrAbstract> blockchairAddrAbstracts = new ArrayList<>();
 
         for(MonitorAddress monitorAddress : monitorAddressList) {
-            blockchairBTCAddrObjList.add(blockChairRestAPI.getBTCAddress(monitorAddress.getAddress()));
+            blockchairAddrAbstracts.add(blockChairRestAPI.getBTCAddress(monitorAddress.getAddress()));
         }
 
-        return blockchairBTCAddrObjList;
+        return blockchairAddrAbstracts;
     }
 
     @GetMapping(value = "/address")
@@ -56,6 +57,8 @@ public class MonitorAddressController {
 
     @GetMapping(value = "/test")
     public void Test() {
-        asyncExcutor.monitorBTCAddress();
+        asyncExcutor.monitorTask1();
+        asyncExcutor.monitorTask2();
+        asyncExcutor.monitorTask3();
     }
 }

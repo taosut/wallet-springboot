@@ -23,17 +23,7 @@ public class TxHistory implements Serializable {
 
     private String addressTag;
 
-    private List<TxDest> destList;
-
     private static final long serialVersionUID = 1L;
-
-    public List<TxDest> getDestList() {
-        return destList;
-    }
-
-    public void setDestList(List<TxDest> destList) {
-        this.destList = destList;
-    }
 
     public String getAddressTag() {
         return addressTag;

@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Component
@@ -31,23 +32,23 @@ public class BlockChairRestAPI {
 
     public Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public BlockchairBTCAddrObj getBTCAddress(String address) {
-        String url =rootUrl + "/bitcoin/dashboards/address/" + address;
+    public BlockchairAddrAbstract getBTCAddress(String address) {
+        String url =rootUrl + "/bitcoin/dashboards/address/" + address + "?transaction_details={transaction_details}&limit={limit}";
 
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, new HashMap<>());
+        Map<String, String> map = new HashMap<>();
+        map.put("transaction_details", "true");
+        map.put("limit", "50,0");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
 
         if(response.getStatusCode().equals(HttpStatus.OK)) {
             String result = response.getBody();
-
-            BlockchairBTCAddrObj blockchairBTCAddrObj = JSONObject.parseObject(result, BlockchairBTCAddrObj.class);
 
             JSONObject resultMap = JSONObject.parseObject(result);
             String addressJsonStr = resultMap.getJSONObject("data").getJSONObject(address).toString();
             BlockchairAddrAbstract blockchairAddrAbstract = JSONObject.parseObject(addressJsonStr, BlockchairAddrAbstract.class);
 
-            blockchairBTCAddrObj.setBlockchairAddrAbstract(blockchairAddrAbstract);
-
-            return blockchairBTCAddrObj;
+            return blockchairAddrAbstract;
         } else {
             logger.error("getBTCAddress failed: " + response.getBody());
             return null;

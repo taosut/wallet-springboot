@@ -34,24 +34,36 @@ public class AsyncExcutor {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-//    @Scheduled(cron = "0 */5 * * * ?")
-    public void monitorBTCAddress() {
+    @Scheduled(cron = "0 17 */1 * * ?")
+    public void monitorTask1() {
+        monitorBTCAddress(0);
+    }
+
+    @Scheduled(cron = "0 32 */1 * * ?")
+    public void monitorTask2() {
+        monitorBTCAddress(1);
+    }
+
+    @Scheduled(cron = "0 59 */1 * * ?")
+    public void monitorTask3() {
+        monitorBTCAddress(2);
+    }
+
+
+    private void monitorBTCAddress(int i) {
         MonitorAddress findMonitorAddressCoindition = new MonitorAddress();
         findMonitorAddressCoindition.setSymbol("BTC");
         List<MonitorAddress> monitorAddressList = monitorAddressService.selectBySelective(findMonitorAddressCoindition);
 
-        for(MonitorAddress monitorAddress : monitorAddressList) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss.SSS'Z'");
-            Instant instant = Instant.now();
-            try {
-                String dateStr = instant.toString();
-                Date date = dateFormat.parse(dateStr);
 
-                monitorAddressTask.monitorBTCByBlockChair(monitorAddress.getAddress(), date.getTime());
-                //            monitorAddressTask.monitorBTCByBlockChain(monitorAddress.getAddress(), new Date().getTime());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss.SSS'Z'");
+        Instant instant = Instant.now();
+        try {
+            String dateStr = instant.toString();
+            Date date = dateFormat.parse(dateStr);
+            monitorAddressTask.monitorBTCByBlockChair(monitorAddressList.get(i).getAddress(), date.getTime());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
     }
 
