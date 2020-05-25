@@ -29,7 +29,7 @@ public class DNCRestAPI {
 
         Map<String,String> map=new HashMap<String,String>();
         map.put("page","1");
-        map.put("pagesize","20");
+        map.put("pagesize","30");
         map.put("webp","1");
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
