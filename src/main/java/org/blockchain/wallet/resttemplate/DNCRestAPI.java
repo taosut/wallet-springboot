@@ -152,4 +152,34 @@ public class DNCRestAPI {
 
         return dncCoinPrice;
     }
+
+    public String getExchangeList() {
+        String url = rootUrl + "/api/v2/exchange/web-exchange?page={page}&pagesize={pagesize}&sort_type={sort_type}" +
+                "&asc={asc}&isinnovation={isinnovation}&type={type}&webp={webp}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("page", "1");
+        map.put("isinnovation","1");
+        map.put("type", "all");
+        map.put("webp","1");
+        map.put("pagesize","10");
+        map.put("sort_type","exrank");
+        map.put("asc","1");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
+
+    public String getExchangeDetail(String code) {
+        String url = rootUrl + "/api/exchange/web-exchangeinfo?code={code}&webp={webp}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("code", code);
+        map.put("webp","1");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
 }
