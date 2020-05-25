@@ -162,7 +162,7 @@ public class DNCRestAPI {
         map.put("isinnovation","1");
         map.put("type", "all");
         map.put("webp","1");
-        map.put("pagesize","10");
+        map.put("pagesize","30");
         map.put("sort_type","exrank");
         map.put("asc","1");
 
