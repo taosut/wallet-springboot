@@ -34,17 +34,17 @@ public class AsyncExcutor {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Scheduled(cron = "0 17 */1 * * ?")
+    @Scheduled(cron = "0 16 */1 * * ?")
     public void monitorTask1() {
         monitorBTCAddress(0);
     }
 
-    @Scheduled(cron = "0 32 */1 * * ?")
+    @Scheduled(cron = "0 33 */1 * * ?")
     public void monitorTask2() {
         monitorBTCAddress(1);
     }
 
-    @Scheduled(cron = "0 59 */1 * * ?")
+    @Scheduled(cron = "0 58 */1 * * ?")
     public void monitorTask3() {
         monitorBTCAddress(2);
     }
