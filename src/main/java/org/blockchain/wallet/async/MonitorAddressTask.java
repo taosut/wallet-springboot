@@ -122,8 +122,10 @@ public class MonitorAddressTask {
         txHistoryFind.setSymbol("BTC");
         List<TxHistory> txHistoryList = txHistoryService.selectBySelective(txHistoryFind);
         for(TxHistory txHistory : txHistoryList) {
-            while(transactionsAll.contains(txHistory.getTxHash())) {
-                transactionsAll.remove(txHistory.getTxHash());
+            for(int i=0;i<transactionsAll.size(); i++ ){
+                if(transactionsAll.get(i).getHash().equals(txHistory.getTxHash())) {
+                    transactionsAll.remove(i);
+                }
             }
         }
 
