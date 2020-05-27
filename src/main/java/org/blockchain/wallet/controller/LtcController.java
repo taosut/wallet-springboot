@@ -16,16 +16,16 @@ public class LtcController {
 
     @GetMapping(value = "/address/{address}")
     public String getAddressInfo(@PathVariable String address) {
-        return sochainRestAPI.getAddressInfo(address);
+        return sochainRestAPI.getLTCAddressInfo(address);
     }
 
     @GetMapping(value = "/tx/{hash}")
     public String getTxInfo(@PathVariable String hash) {
-        return sochainRestAPI.getTxInfo(hash);
+        return sochainRestAPI.getLTCTxInfo(hash);
     }
 
     @PostMapping(value = "/send_tx")
     public String getTxInfo(@RequestBody SochainBroadcast sochainBroadcast) {
-        return sochainRestAPI.broadcast(sochainBroadcast);
+        return sochainRestAPI.broadcastLTC(sochainBroadcast);
     }
 }

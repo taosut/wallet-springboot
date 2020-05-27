@@ -24,7 +24,7 @@ public class SochainRestAPI {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public String getAddressInfo(String address) {
+    public String getLTCAddressInfo(String address) {
         String url = rootUrl + "/api/v2/address/LTCTEST/" + address;
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, new HashMap<>());
@@ -32,7 +32,7 @@ public class SochainRestAPI {
         return response.getBody();
     }
 
-    public String getTxInfo(String txid) {
+    public String getLTCTxInfo(String txid) {
         String url = rootUrl + "/api/v2/tx/LTCTEST/" + txid;
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, new HashMap<>());
@@ -40,7 +40,7 @@ public class SochainRestAPI {
         return response.getBody();
     }
 
-    public String broadcast(SochainBroadcast sochainBroadcast) {
+    public String broadcastLTC(SochainBroadcast sochainBroadcast) {
         String url = rootUrl + "/api/v2/send_tx/LTCTEST";
 
         String requestBody = JSONObject.toJSONString(sochainBroadcast);
