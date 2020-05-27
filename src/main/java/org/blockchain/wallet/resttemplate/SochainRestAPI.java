@@ -41,7 +41,7 @@ public class SochainRestAPI {
     }
 
     public String broadcast(SochainBroadcast sochainBroadcast) {
-        String url = rootUrl + "/api/v2/send_tx/";
+        String url = rootUrl + "/api/v2/send_tx/LTCTEST";
 
         String requestBody = JSONObject.toJSONString(sochainBroadcast);
 
