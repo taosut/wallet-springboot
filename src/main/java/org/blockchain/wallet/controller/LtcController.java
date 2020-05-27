@@ -20,4 +20,9 @@ public class LtcController {
     public String getAddressInfo(@PathVariable String address) {
         return sochainRestAPI.getAddressInfo(address);
     }
+
+    @GetMapping(value = "/tx/{hash}")
+    public String getTxInfo(@PathVariable String hash) {
+        return sochainRestAPI.getTxInfo(hash);
+    }
 }

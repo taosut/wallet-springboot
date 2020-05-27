@@ -30,4 +30,12 @@ public class SochainRestAPI {
 
         return response.getBody();
     }
+
+    public String getTxInfo(String txid) {
+        String url = rootUrl + "/api/v2/tx/LTCTEST/" + txid;
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, new HashMap<>());
+
+        return response.getBody();
+    }
 }
