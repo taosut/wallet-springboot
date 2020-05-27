@@ -103,6 +103,7 @@ public class CryptoRestAPI {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("X-API-KEY", apiKey);
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody,headers);
 
