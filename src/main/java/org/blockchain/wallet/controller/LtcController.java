@@ -1,12 +1,10 @@
 package org.blockchain.wallet.controller;
 
+import org.blockchain.wallet.entity.SochainBroadcast;
 import org.blockchain.wallet.resttemplate.SochainRestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @EnableAutoConfiguration
 @RestController
@@ -24,5 +22,10 @@ public class LtcController {
     @GetMapping(value = "/tx/{hash}")
     public String getTxInfo(@PathVariable String hash) {
         return sochainRestAPI.getTxInfo(hash);
+    }
+
+    @PostMapping(value = "/send_tx")
+    public String getTxInfo(@RequestBody SochainBroadcast sochainBroadcast) {
+        return sochainRestAPI.broadcast(sochainBroadcast);
     }
 }
