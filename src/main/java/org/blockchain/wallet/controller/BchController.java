@@ -22,4 +22,9 @@ public class BchController {
     public String getTxList(@PathVariable String address) {
         return cryptoRestAPI.getBCHTxList(address);
     }
+
+    @GetMapping(value = "/txid/{hash}")
+    public String getTxid(@PathVariable String hash) {
+        return cryptoRestAPI.getBCHTxInfo(hash);
+    }
 }

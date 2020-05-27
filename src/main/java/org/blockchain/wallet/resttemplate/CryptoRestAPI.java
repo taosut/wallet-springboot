@@ -69,4 +69,18 @@ public class CryptoRestAPI {
 
         return txList.toString();
     }
+
+    public String getBCHTxInfo(String hash) {
+        String url = rootUrl + "/v1/bc/bch/testnet/txs/txid/" + hash;
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("X-API-KEY", apiKey);
+
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class, new HashMap<>());
+
+        return response.getBody();
+    }
 }
