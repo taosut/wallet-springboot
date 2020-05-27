@@ -1,5 +1,6 @@
 package org.blockchain.wallet.controller;
 
+import org.blockchain.wallet.entity.CryptoBroadcast;
 import org.blockchain.wallet.resttemplate.CryptoRestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -26,5 +27,15 @@ public class BchController {
     @GetMapping(value = "/txid/{hash}")
     public String getTxid(@PathVariable String hash) {
         return cryptoRestAPI.getBCHTxInfo(hash);
+    }
+
+    @GetMapping(value = "/tx/fee")
+    public String getTxFee() {
+        return cryptoRestAPI.getBCHTxFee();
+    }
+
+    @PostMapping(value = "/send_tx")
+    public String broadcast(@RequestBody CryptoBroadcast cryptoBroadcast) {
+        return cryptoRestAPI.broadcastBch(cryptoBroadcast);
     }
 }

@@ -1,6 +1,7 @@
 package org.blockchain.wallet.controller;
 
 import org.blockchain.wallet.entity.SochainBroadcast;
+import org.blockchain.wallet.resttemplate.CryptoRestAPI;
 import org.blockchain.wallet.resttemplate.SochainRestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +15,9 @@ public class LtcController {
     @Autowired
     SochainRestAPI sochainRestAPI;
 
+    @Autowired
+    CryptoRestAPI cryptoRestAPI;
+
     @GetMapping(value = "/address/{address}")
     public String getAddressInfo(@PathVariable String address) {
         return sochainRestAPI.getLTCAddressInfo(address);
@@ -24,8 +28,13 @@ public class LtcController {
         return sochainRestAPI.getLTCTxInfo(hash);
     }
 
+    @GetMapping(value = "/tx/fee")
+    public String getTxFee() {
+        return cryptoRestAPI.getLTCTxFee();
+    }
+
     @PostMapping(value = "/send_tx")
-    public String getTxInfo(@RequestBody SochainBroadcast sochainBroadcast) {
+    public String broadcast(@RequestBody SochainBroadcast sochainBroadcast) {
         return sochainRestAPI.broadcastLTC(sochainBroadcast);
     }
 }
