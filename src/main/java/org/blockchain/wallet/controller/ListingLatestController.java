@@ -36,4 +36,9 @@ public class ListingLatestController {
     public Object getCoinInfo(@RequestParam String code) {
         return dncRestAPI.coinDetail(code);
     }
+
+    @GetMapping(value = "/globalInfo")
+    public Object getGlobalInfo() {
+        return dncRestAPI.getGlobalInfo();
+    }
 }

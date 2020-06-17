@@ -182,4 +182,15 @@ public class DNCRestAPI {
 
         return response.getBody();
     }
+
+    public String getGlobalInfo() {
+        String url = rootUrl + "/api/home/global?webp={webp}";
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("webp","1");
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, map);
+
+        return response.getBody();
+    }
 }
